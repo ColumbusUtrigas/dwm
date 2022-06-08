@@ -8,10 +8,15 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = {
-	"JetBrainsMono Nerd Font:size=12",
-	//"monospace:size=12",
-	"FontAwesome 6 Free:size=12",
-	//"NotoColorEmoji:size=10"
+	//"Noto Sans:size=14",
+	"Hack:pixelsize=16",
+//	"JoyPixels:pixelsize=12:antialias=true:autohint=true",
+	"JetBrains Nerd Font:size=14",
+	//"JoyPixels:size=12",
+	"monospace:size=12",
+	//"FontAwesome 6 Brands:size=12,"
+//	"FontAwesome 6 Free:size=12,"
+	//"Noto Color Emoji:size=12"
 };
 static const char dmenufont[]       = "monospace:size=10:antialias=true:autohint=true";
 static const char col_gray1[]       = "#222222";
@@ -26,11 +31,33 @@ static const char *colors[][3]      = {
 };
 
 static const char *keyboardLayouts[] = { "us", "ru" };
+static int currentKeyboardLayout = 0;
+static void switchKeyboardLayout(const Arg *arg) {
+	currentKeyboardLayout = (currentKeyboardLayout + arg->i) % LENGTH(keyboardLayouts);
+	const char *switchcmd[] = { "xkb-switch", "-s", keyboardLayouts[currentKeyboardLayout], NULL };
+	const char *reloadcmd[] = { "pkill", "-RTMIN+11", "dwmblocks", NULL };
+	const Arg sarg = {.v = switchcmd};
+	spawn(&sarg);
+	const Arg rarg = {.v = reloadcmd};
+	spawn(&rarg);
+}
+
+static const char *const autostart[] = {
+	"dwmblocks", NULL,
+	"setxkbmap", "-layout", "us,ru", NULL,
+	NULL /* terminate */
+};
+
 
 /* tagging */
 static const char *tags[] = { "", "", "", "", "", "", "", "", "9" };
 
-static const Rule rules[] = {i
+static const unsigned int ulinepad     = 5;    /* horizontal padding between the underline and tag */
+static const unsigned int ulinestroke  = 2;    /* thickness / height of the underline */
+static const unsigned int ulinevoffset = 0;    /* how far above the bottom of the bar the line should appear */
+static const int ulineall              = 0;    /* 1 to show underline on all tags, 0 for just the active ones */
+
+static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
@@ -55,6 +82,7 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod1Mask
+#define WINKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -80,7 +108,7 @@ static Key keys[] = {
 	{ 0, XF86XK_AudioLowerVolume,              spawn,          SHCMD("pamixer --allow-boost -d 5; pkill -RTMIN+10 dwmblocks") },
 	{ 0, XF86XK_AudioMute,                     spawn,          SHCMD("pamixer -t; pkill -RTMIN+10 dwmblocks") },
 	{ 0, XK_Print,                             spawn,          {.v = screenshot } },
-	{ MODKEY,                       XK_Shift_L,spawn,          {.v }},
+	{ WINKEY,                       XK_space,  switchKeyboardLayout, {.i = +1 } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
