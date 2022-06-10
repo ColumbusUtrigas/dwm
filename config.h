@@ -7,23 +7,13 @@ static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = {
-	//"Noto Sans:size=14",
-	"Hack:pixelsize=16",
-//	"JoyPixels:pixelsize=12:antialias=true:autohint=true",
-	"JetBrains Nerd Font:size=14",
-	//"JoyPixels:size=12",
-	"monospace:size=12",
-	//"FontAwesome 6 Brands:size=12,"
-//	"FontAwesome 6 Free:size=12,"
-	//"Noto Color Emoji:size=12"
-};
+static const char *fonts[]          = { "JetBrainsMono Nerd Font:size=10", };
 static const char dmenufont[]       = "monospace:size=10:antialias=true:autohint=true";
 static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char col_cyan[]        = "#003355";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -45,12 +35,13 @@ static void switchKeyboardLayout(const Arg *arg) {
 static const char *const autostart[] = {
 	"dwmblocks", NULL,
 	"setxkbmap", "-layout", "us,ru", NULL,
+	"bg-set-image", NULL,
 	NULL /* terminate */
 };
 
 
 /* tagging */
-static const char *tags[] = { "", "", "", "", "", "", "", "", "9" };
+static const char *tags[] = { "", "", "", "", "", "", "", "", "" };
 
 static const unsigned int ulinepad     = 5;    /* horizontal padding between the underline and tag */
 static const unsigned int ulinestroke  = 2;    /* thickness / height of the underline */
@@ -97,7 +88,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 static const char *termcmd[]  = { "konsole", NULL };
 static const char *browsercmd[] = { "firefox", NULL };
-static const char* screenshot[] = { "spectacle", NULL };
+static const char* screenshot[] = { "flameshot", "gui", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
