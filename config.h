@@ -37,7 +37,9 @@ static const char *const autostart[] = {
 	"dwmblocks", NULL,
 	"setxkbmap", "-layout", "us,ru", NULL,
 	"bg-set-image", NULL,
-	"sh", "-c",  "CM_SELECTIONS=\"clipboard\" clipmenud", NULL,
+	"sh", "-c",  "CM_SELECTIONS=\"clipboard\" CM_OWN_CLIPBOARD=1 clipmenud", NULL,
+	"/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1", NULL,
+	"picom", "--experimental-backends", NULL,
 	NULL /* terminate */
 };
 
@@ -87,6 +89,7 @@ static const Layout layouts[] = {
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+#define STATUSBAR "dwmblocks"
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -149,7 +152,9 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
-	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+	{ ClkStatusText,        0,              Button1,        sigstatusbar,          {.i = 1 } },
+	{ ClkStatusText,        0,              Button2,        sigstatusbar,          {.i = 2 } },
+	{ ClkStatusText,        0,              Button3,        sigstatusbar,          {.i = 3 } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
 	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
