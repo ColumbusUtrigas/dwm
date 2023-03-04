@@ -44,9 +44,10 @@ static const char *const autostart[] = {
 	"bg-set-image", NULL,
 	"nm-applet", NULL,
 	"blueman-applet", NULL,
+	"optimus-manager-qt", NULL,
 	"sh", "-c",  "CM_SELECTIONS=\"clipboard\" CM_OWN_CLIPBOARD=1 clipmenud", NULL,
 	"/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1", NULL,
-	"picom", NULL,
+//	"picom", NULL,
 	NULL /* terminate */
 };
 
