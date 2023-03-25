@@ -1,6 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
 #include <X11/XF86keysym.h>
+#include "tcl.c"
 
 /* appearance */
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
@@ -26,7 +27,7 @@ static const char *colors[][3]      = {
 	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
 };
 
-static const char *keyboardLayouts[] = { "us", "ru" };
+static const char *keyboardLayouts[] = { "gb", "ru" };
 static int currentKeyboardLayout = 0;
 static void switchKeyboardLayout(const Arg *arg) {
 	currentKeyboardLayout = (currentKeyboardLayout + arg->i) % LENGTH(keyboardLayouts);
@@ -40,7 +41,7 @@ static void switchKeyboardLayout(const Arg *arg) {
 
 static const char *const autostart[] = {
 	"dwmblocks", NULL,
-	"setxkbmap", "-layout", "us,ru", NULL,
+	"setxkbmap", "-layout", "gb,ru", NULL,
 	"bg-set-image", NULL,
 	"nm-applet", NULL,
 	"blueman-applet", NULL,
@@ -82,8 +83,9 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
+	{ "|||",      tcl  },    /* three-column layout */
 	{ "[M]",      monocle },
+	{ "><>",      NULL },    /* no layout function means floating behavior */
 };
 
 /* key definitions */
